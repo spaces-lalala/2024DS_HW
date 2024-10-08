@@ -43,7 +43,7 @@ public:
         newNode->next = nullptr;
 
         // 打印新節點的記憶體地址
-        printNodeAddress(newNode);
+        // printNodeAddress(newNode);
 
         // 如果鏈表是空的，直接新增第一個節點
         if (head == nullptr) {

@@ -1,3 +1,6 @@
+#此版本為撇除DynamicArray++，為了讓折線圖比較好分辨時間
+
+
 import os
 import subprocess
 import pandas as pd
@@ -32,14 +35,12 @@ def main():
     # 定義可執行檔路徑和輸出檔案名稱
     cpp_programs = {
         "dynamic_array": "./DynamicArray",
-        "dynamic_array_increment": "./DynamicArrayIncrement",
         "linked_list": "./LinkedList",
         "linked_list_sorted": "./LinkedListSorted"
     }
     
     output_files = {
         "dynamic_array": "output_dynamic_array_1.csv",
-        "dynamic_array_increment": "output_dynamic_array_increment_1.csv",
         "linked_list": "output_linked_list_1.csv",
         "linked_list_sorted": "output_linked_list_sorted_1.csv"
     }
@@ -50,7 +51,7 @@ def main():
             f.write("n,time\n")  # CSV header
 
     # 迭代 k 值從 11 到 25，並計算對應的 n = 2^k
-    for k in range(11, 20):
+    for k in range(11, 17):
         n_value = int(math.pow(2, k))
         print(f"Running for n = 2^{k} = {n_value}")
         
@@ -61,12 +62,10 @@ def main():
     # 定義 CSV 檔案和對應標籤
     filenames = [
         "output_dynamic_array_1.csv",
-        "output_dynamic_array_increment_1.csv",
         "output_linked_list_1.csv",
         "output_linked_list_sorted_1.csv"
     ]
-    labels = ["Dynamic Array", "Dynamic Array++", "Linked List", "Linked List++"]
-    # labels = ["Dynamic Array","Linked List", "Linked List++"]
+    labels = ["Dynamic Array","Linked List", "Linked List++"]
 
     # 繪製折線圖
     plot_first_graph(filenames, labels, "graph1_time_to_add.png")

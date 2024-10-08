@@ -66,12 +66,12 @@ public:
         newNode->data = value;
         newNode->next = nullptr;
 
-        printNodeAddress(newNode);
+        // printNodeAddress(newNode);
 
         // 如果列表是空的，直接添加第一個節點
         if (head == nullptr) {
             head = tail = newNode;  // 初始化 head 和 tail
-            printNodeAddress(newNode);  // 立即打印地址
+            // printNodeAddress(newNode);  // 立即打印地址
             // cout << "Inserted first node." << endl;
             return;
         }
@@ -107,7 +107,7 @@ int main(int argc, char* argv[]) {
     double totalDuration = 0; // 記錄總時間
 
     for (int experiment = 0; experiment < numExperiments; experiment++) {
-        cout << "New" << endl;
+        // cout << "New" << endl;
         LinkedListSorted LinkedListSorted(n);
 
         // 開始計時
