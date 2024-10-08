@@ -13,13 +13,16 @@ private:
     };
 
     Node* head;
+    Node* tail;
 
 public:
-    LinkedList() : head(nullptr) {}
+    LinkedList() : head(nullptr), tail(nullptr) {}
 
     ~LinkedList() {
         Node* current = head;
         Node* nextNode;
+
+        // 釋放鏈結串列的所有節點
         while (current != nullptr) {
             nextNode = current->next;
             delete current;
@@ -27,11 +30,41 @@ public:
         }
     }
 
+    // Function to print the memory address of a node
+    void printNodeAddress(Node* node) {
+        cout << "Node address: " << node << endl;
+    }
+
+    // 新增節點到尾端
     void add(int value) {
+        // 動態分配新節點
         Node* newNode = new Node;
         newNode->data = value;
-        newNode->next = head;
-        head = newNode;
+        newNode->next = nullptr;
+
+        // 打印新節點的記憶體地址
+        printNodeAddress(newNode);
+
+        // 如果鏈表是空的，直接新增第一個節點
+        if (head == nullptr) {
+            head = tail = newNode;  // 初始化 head 和 tail
+            // cout << "Inserted first node." << endl;
+        } else {
+            // 將新節點連接到當前的尾節點後面
+            tail->next = newNode;
+            tail = newNode;  // 更新 tail 指向新的最後一個節點
+            // cout << "Inserted node at tail." << endl;
+        }
+    }
+
+    // 列印鏈結串列中的所有節點
+    void printList() {
+        Node* temp = head;
+        while (temp != nullptr) {
+            cout << temp->data << " ";
+            temp = temp->next;
+        }
+        cout << endl;
     }
 };
 
