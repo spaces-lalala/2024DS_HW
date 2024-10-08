@@ -22,6 +22,7 @@ def plot_first_graph(filenames, labels, output_image):
     plt.xlabel("Number of Elements (n)")
     plt.ylabel("Time to Add Elements (seconds)")
     plt.title("Time to Add n Elements")
+    plt.xticks(data['n'], [f'2^{int(math.log2(n))}' for n in data['n']])
     plt.legend()
     plt.grid(True)
     plt.savefig(output_image)
@@ -49,7 +50,7 @@ def main():
             f.write("n,time\n")  # CSV header
 
     # 迭代 k 值從 11 到 25，並計算對應的 n = 2^k
-    for k in range(11, 15):
+    for k in range(11, 17):
         n_value = int(math.pow(2, k))
         print(f"Running for n = 2^{k} = {n_value}")
         
