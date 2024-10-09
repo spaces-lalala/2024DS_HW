@@ -16,15 +16,22 @@ def plot_first_graph(filenames, labels, output_image):
     for filename, label in zip(filenames, labels):
         # 讀取 CSV 資料
         data = pd.read_csv(filename)
-        plt.plot(data['n'], data['time'], label=label)
+        plt.plot(data['n'], data['time'], label=label,marker='o')
 
     # 設置圖表的標籤和標題
     plt.xlabel("Number of Elements (n)")
     plt.ylabel("Time to Sum Elements (seconds)")
     plt.title("Time to Sum n Elements")
-    plt.xticks(data['n'], [f'2^{int(math.log2(n))}' for n in data['n']])
+
+    # 將 X 軸標籤設置為等距的 2^k 標籤
+    xticks_labels = [f'2^{int(math.log2(n))}' for n in data['n']]
+    plt.xticks(range(len(xticks_labels)), xticks_labels)  # X 軸標籤應該是等距的
+
     plt.legend()
     plt.grid(True)
+    
+    # 儲存並顯示圖表
+    plt.tight_layout()
     plt.savefig(output_image)
     plt.show()
 
