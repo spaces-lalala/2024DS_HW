@@ -70,12 +70,13 @@ public:
 
 // 主程式
 int main(int argc, char* argv[]) {
-    if (argc != 2) {
-        cerr << "Usage: " << argv[0] << " <n>\n";
+    if (argc < 3) {
+        cerr << "Usage: " << argv[0] << " <n> <mode>\n";
         return 1;
     }
 
     int n = stoi(argv[1]); // 讀取輸入的 n 值
+    string mode = argv[2]; // 讀取輸入的 mode
 
     const int numExperiments = 10; // 設定重複次數
     double totalDuration = 0; // 記錄總時間
@@ -100,7 +101,7 @@ int main(int argc, char* argv[]) {
 
     // 計算平均時間
     double avgDuration = totalDuration / numExperiments;
-    cout << n << "," << avgDuration / 1e6 << endl; // 輸出資料數量和所需時間（秒） 
+    if(mode == "first" || mode == "first_2" ) cout << n << "," << avgDuration / 1e6 << endl; // 輸出資料數量和所需時間（秒） 
 
 
     return 0;

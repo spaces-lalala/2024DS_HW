@@ -5,9 +5,9 @@ import matplotlib.pyplot as plt
 import math
 
 # 執行 C++ 程式並生成 CSV
-def run_cpp_program(executable_path, n_value, output_file):
+def run_cpp_program(executable_path, n_value, output_file, mode='first'):
     with open(output_file, 'a') as output:  # 'a' 是追加模式
-        subprocess.run([executable_path, str(n_value)], stdout=output)
+        subprocess.run([executable_path, str(n_value), mode], stdout=output)
 
 # 繪製第1張折線圖
 def plot_first_graph(filenames, labels, output_image):
