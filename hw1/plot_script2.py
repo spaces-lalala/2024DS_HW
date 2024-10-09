@@ -1,6 +1,3 @@
-#此版本為撇除DynamicArray++，為了讓折線圖比較好分辨時間
-
-
 import os
 import subprocess
 import pandas as pd
@@ -8,7 +5,7 @@ import matplotlib.pyplot as plt
 import math
 
 # 執行 C++ 程式並生成 CSV
-def run_cpp_program(executable_path, n_value, output_file, mode="first_2"):
+def run_cpp_program(executable_path, n_value, output_file, mode='second'):
     with open(output_file, 'a') as output:  # 'a' 是追加模式
         subprocess.run([executable_path, str(n_value), mode], stdout=output)
 
@@ -23,8 +20,8 @@ def plot_first_graph(filenames, labels, output_image):
 
     # 設置圖表的標籤和標題
     plt.xlabel("Number of Elements (n)")
-    plt.ylabel("Time to Add Elements (seconds)")
-    plt.title("Time to Add n Elements")
+    plt.ylabel("Time to Sum Elements (seconds)")
+    plt.title("Time to Sum n Elements")
     plt.xticks(data['n'], [f'2^{int(math.log2(n))}' for n in data['n']])
     plt.legend()
     plt.grid(True)
@@ -35,14 +32,16 @@ def main():
     # 定義可執行檔路徑和輸出檔案名稱
     cpp_programs = {
         "dynamic_array": "./DynamicArray",
+        "dynamic_array_increment": "./DynamicArrayIncrement",
         "linked_list": "./LinkedList",
         "linked_list_sorted": "./LinkedListSorted"
     }
     
     output_files = {
-        "dynamic_array": "output_1_1_DA.csv",
-        "linked_list": "output_1_1_LL.csv",
-        "linked_list_sorted": "output_1_1_LL++.csv"
+        "dynamic_array": "output_2_DA.csv",
+        "dynamic_array_increment": "output_2_DA++.csv",
+        "linked_list": "output_2_LL.csv",
+        "linked_list_sorted": "output_2_LL++.csv"
     }
 
     # 初始化 CSV 檔案
@@ -51,7 +50,7 @@ def main():
             f.write("n,time\n")  # CSV header
 
     # 迭代 k 值從 11 到 25，並計算對應的 n = 2^k
-    for k in range(11, 18):
+    for k in range(11, 16):
         n_value = int(math.pow(2, k))
         print(f"Running for n = 2^{k} = {n_value}")
         
@@ -61,14 +60,16 @@ def main():
 
     # 定義 CSV 檔案和對應標籤
     filenames = [
-        "output_1_1_DA.csv",
-        "output_1_1_LL.csv",
-        "output_1_1_LL++.csv"
+        "output_2_DA.csv",
+        "output_2_DA++.csv",
+        "output_2_LL.csv",
+        "output_2_LL++.csv"
     ]
-    labels = ["Dynamic Array","Linked List", "Linked List++"]
+    labels = ["Dynamic Array", "Dynamic Array++", "Linked List", "Linked List++"]
+    # labels = ["Dynamic Array","Linked List", "Linked List++"]
 
     # 繪製折線圖
-    plot_first_graph(filenames, labels, "graph1_1_time_to_add.png")
+    plot_first_graph(filenames, labels, "graph2_time_to_sum.png")
 
 if __name__ == "__main__":
     main()

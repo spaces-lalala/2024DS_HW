@@ -38,10 +38,10 @@ def main():
     }
     
     output_files = {
-        "dynamic_array": "output_dynamic_array_1.csv",
-        "dynamic_array_increment": "output_dynamic_array_increment_1.csv",
-        "linked_list": "output_linked_list_1.csv",
-        "linked_list_sorted": "output_linked_list_sorted_1.csv"
+        "dynamic_array": "output_1_DA.csv",
+        "dynamic_array_increment": "output_1_DA++.csv",
+        "linked_list": "output_1_LL.csv",
+        "linked_list_sorted": "output_1_LL++.csv"
     }
 
     # 初始化 CSV 檔案
@@ -50,7 +50,7 @@ def main():
             f.write("n,time\n")  # CSV header
 
     # 迭代 k 值從 11 到 25，並計算對應的 n = 2^k
-    for k in range(11, 26):
+    for k in range(11, 16):
         n_value = int(math.pow(2, k))
         print(f"Running for n = 2^{k} = {n_value}")
         
@@ -60,10 +60,10 @@ def main():
 
     # 定義 CSV 檔案和對應標籤
     filenames = [
-        "output_dynamic_array_1.csv",
-        "output_dynamic_array_increment_1.csv",
-        "output_linked_list_1.csv",
-        "output_linked_list_sorted_1.csv"
+        "output_1_DA.csv",
+        "output_1_DA++.csv",
+        "output_1_LL.csv",
+        "output_1_LL++.csv"
     ]
     labels = ["Dynamic Array", "Dynamic Array++", "Linked List", "Linked List++"]
     # labels = ["Dynamic Array","Linked List", "Linked List++"]
