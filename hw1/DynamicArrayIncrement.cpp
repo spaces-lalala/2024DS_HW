@@ -124,9 +124,6 @@ int main(int argc, char* argv[]) {
         auto End_2 = high_resolution_clock::now();
         duration<double> sumDuration_2 = End_2 - Start_2;
         totalDuration_2 += sumDuration_2.count();
-        auto End_2 = high_resolution_clock::now();
-        duration<double> sumDuration_2 = End_2 - Start_2;
-        totalDuration_2 += sumDuration_2.count();
     }
     // 輸出結果
     double avgDuration_1 = totalDuration_1 / numExperiments;
