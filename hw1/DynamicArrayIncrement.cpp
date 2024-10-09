@@ -55,6 +55,15 @@ public:
         return total;
     }
 
+    //用來計算時間怕超出Int範圍
+    void sum_void() const {
+        int total = 0;
+        for (size_t i = 0; i < size; i++) {
+            total = arr[i];
+        }
+        return ;
+    }
+
     // 取得元素數量
     size_t getSize() const {
         return size;
@@ -110,7 +119,11 @@ int main(int argc, char* argv[]) {
 
         //mode == "second" 
         auto Start_2 = high_resolution_clock::now();
-        int totalSum_2 = dynamicArray.sum();
+        // int totalSum_2 = dynamicArray.sum();
+        dynamicArray.sum_void();
+        auto End_2 = high_resolution_clock::now();
+        duration<double> sumDuration_2 = End_2 - Start_2;
+        totalDuration_2 += sumDuration_2.count();
         auto End_2 = high_resolution_clock::now();
         duration<double> sumDuration_2 = End_2 - Start_2;
         totalDuration_2 += sumDuration_2.count();

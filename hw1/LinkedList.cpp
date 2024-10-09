@@ -67,6 +67,17 @@ public:
         return total;
     }
 
+    //用來計算時間
+    void sum_void() const {
+        int total = 0;
+        Node* current = head;
+        while (current != nullptr) {
+            total = current->data;
+            current = current->next;
+        }
+        return ;
+    }
+
     // 列印鏈結串列中的所有節點
     void printList() {
         Node* temp = head;
@@ -111,7 +122,11 @@ int main(int argc, char* argv[]) {
 
         // 計算總和計時 Mode == "second"
         auto Start_2 = high_resolution_clock::now();
-        int totalSum_2 = linkedList.sum();
+        // int totalSum_2 = linkedList.sum();
+        linkedList.sum_void();
+        auto End_2 = high_resolution_clock::now();
+        auto sumDuration_2 = duration_cast<microseconds>(End_2 - Start_2);
+        totalDuration_2 += sumDuration_2.count();
         auto End_2 = high_resolution_clock::now();
         auto sumDuration_2 = duration_cast<microseconds>(End_2 - Start_2);
         totalDuration_2 += sumDuration_2.count(); 
