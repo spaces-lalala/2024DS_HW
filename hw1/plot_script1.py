@@ -3,6 +3,8 @@ import subprocess
 import pandas as pd
 import matplotlib.pyplot as plt
 import math
+from sklearn.linear_model  import LinearRegression
+import numpy as np
 
 # 執行 C++ 程式並生成 CSV
 def run_cpp_program(executable_path, n_value, output_file, mode='first'):
@@ -58,7 +60,7 @@ def main():
             f.write("n,time\n")  # CSV header
 
     # 迭代 k 值從 11 到 25，並計算對應的 n = 2^k
-    for k in range(11, 20):
+    for k in range(11, 26):
         n_value = int(math.pow(2, k))
         print(f"Running for n = 2^{k} = {n_value}")
         
