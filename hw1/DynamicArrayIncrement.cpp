@@ -144,7 +144,7 @@ int main(int argc, char* argv[]) {
         //mode == "second" 
         auto Start_2 = high_resolution_clock::now();
         // int totalSum_2 = dynamicArray.sum();
-        dynamicArray.sum_void();
+        int total = dynamicArray.sum();
         auto End_2 = high_resolution_clock::now();
         duration<double> sumDuration_2 = End_2 - Start_2;
         totalDuration_2 += sumDuration_2.count();

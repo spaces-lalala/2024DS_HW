@@ -8,7 +8,7 @@ import numpy as np
 # 執行 C++ 程式並生成 CSV
 def run_cpp_program(executable_path, output_file, mode='third'):
     with open(output_file, 'a') as output:  # 'a' 是追加模式
-        subprocess.run([executable_path, 1, mode], stdout=output) #此處的1沒有用途
+        subprocess.run([executable_path, str(1), mode], stdout=output) #此處的1沒有用途
 
 
 # 繪製第1張折線圖

@@ -175,7 +175,7 @@ int main(int argc, char* argv[]) {
         // 計算總和計時 Mode == "second"
         auto Start_2 = high_resolution_clock::now();
         // int totalSum_2 = LinkedListSorted.sum();
-        LinkedListSorted.sum_void();
+        int total = LinkedListSorted.sum();
         auto End_2 = high_resolution_clock::now();
         auto sumDuration_2 = duration_cast<microseconds>(End_2 - Start_2);
         totalDuration_2 += sumDuration_2.count(); 
