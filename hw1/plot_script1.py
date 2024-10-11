@@ -7,7 +7,7 @@ from sklearn.linear_model  import LinearRegression
 import numpy as np
 
 # 執行 C++ 程式並生成 CSV
-def run_cpp_program(executable_path, n_value, output_file, mode='first', timeout=60000):
+def run_cpp_program(executable_path, n_value, output_file, mode='first', timeout=3600):  #抓1hr
     try:
         with open(output_file, 'a') as output:  # 'a' 是追加模式
             subprocess.run([executable_path, str(n_value), mode], stdout=output, timeout=timeout)
@@ -35,7 +35,7 @@ def plot_first_graph(filenames, labels, output_image, missing_points):
     # 設置圖表的標籤和標題
     plt.xlabel("Number of Elements (n)")
     plt.ylabel("Time to Add Elements (seconds)")
-    plt.title("Time to Add n Elements")
+    plt.title("Time to Add n Elements plot")
 
 
     # 將 X 軸標籤設置為等距的 2^k 標籤
@@ -122,7 +122,7 @@ def main():
                 continue  # 繼續處理下一個資料結構
             
             # 執行程式並檢查是否成功
-            success = run_cpp_program(executable, n_value, output_files[name], timeout=60000)
+            success = run_cpp_program(executable, n_value, output_files[name], timeout=3600)
             
             # 若超過時間限制，則記錄需要預測的點並標記為跳過後續
             if not success:
@@ -154,7 +154,6 @@ def main():
         "output_1_LL++.csv"
     ]
     labels = ["Dynamic Array", "Dynamic Array++", "Linked List", "Linked List++"]
-    # labels = ["Dynamic Array","Linked List", "Linked List++"]
 
     # 繪製折線圖
     plot_first_graph(filenames, labels, "graph1_time_to_add.png", missing_points)

@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <chrono>
 #include <cstdlib>
+#include <cmath>
 
 using namespace std;
 using namespace std::chrono;
@@ -44,6 +45,7 @@ public:
     // 自動從預先分配的區域內分配記憶體給新節點
     Node* allocateNode() {
         if (currentOffset >= totalNodes) {
+            cerr << currentOffset << " " << totalNodes << endl;
             cerr << "No more memory to allocate nodes!" << endl;
             return nullptr;  // 超過分配範圍
         }
@@ -123,26 +125,44 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    int n = stoi(argv[1]); // 讀取輸入的 n 值
+    int n = stoi(argv[1]);
     string mode = argv[2]; // 讀取輸入的 mode
 
+    if (mode == "third") n = int(pow(2,20));
+
+    const int block_size = int(pow(2,13));
 
     const int numExperiments = 10; // 設定重複次數
     double totalDuration_1 = 0; // 記錄總時間
     double totalDuration_2 = 0; // 記錄總時間
-    double totalDuration_3 = 0; // 記錄總時間
+    double totalDuration_3[150]; // 記錄總時間
+
+    for (int i = 0; i < 150; i++){
+        totalDuration_3[i] = 0;
+    }
 
     for (int experiment = 0; experiment < numExperiments; experiment++) {
         // cout << "New" << endl;
         LinkedListSorted LinkedListSorted(n);
+        int count3 = 0;
 
         // 開始計時
         auto start_1 = high_resolution_clock::now();
 
         // 新增 n 筆隨機資料
         for (int i = 0; i < n; i++) {
-            int value = rand() % 10000;
-            LinkedListSorted.add(value);
+            if ((i+1)%block_size == 0){ //mode == "third"
+                auto start_3 = high_resolution_clock::now();
+                int value = rand() % 10000;
+                LinkedListSorted.add(value);
+                auto end_3 = high_resolution_clock::now();
+                duration<double> duration_3 = end_3 - start_3;
+                totalDuration_3[count3] += duration_3.count();
+            }
+            else{
+                int value = rand() % 10000;
+                LinkedListSorted.add(value);
+            }
         }
 
 
@@ -164,8 +184,19 @@ int main(int argc, char* argv[]) {
     // 輸出結果
     double avgDuration_1 = totalDuration_1 / numExperiments;
     double avgDuration_2 = totalDuration_2 / numExperiments; // mode == "second"
+    double avgDuration_3[150]; // mode == "third"
+
+    for (int i = 0; i < 128; i++){
+        avgDuration_3[i] = totalDuration_3[i] / numExperiments;
+    }
+
     if(mode == "first" || mode == "first_2" )     cout << n << "," << avgDuration_1 / 1e6 << endl; // 輸出資料數量和所需時間（秒） 
     else if(mode == "second" || mode == "second_2" ) cout << n << "," << avgDuration_2 / 1e6 << endl; // 輸出資料數量和所需時間（秒）
+    else if(mode == "third") {
+        for (int i = 0; i < 128; i++){
+            cout << i+1 << "," << avgDuration_3[i] / 1e6 << endl; // 輸出資料數量和所需時間（秒）
+        }
+    }
 
     return 0;
 }

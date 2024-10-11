@@ -8,7 +8,7 @@ import numpy as np
 # 執行 C++ 程式並生成 CSV
 def run_cpp_program(executable_path, output_file, mode='third'):
     with open(output_file, 'a') as output:  # 'a' 是追加模式
-        subprocess.run([executable_path, 1, mode], stdout=output) #此處的1沒有用途
+        subprocess.run([executable_path, "dummy_arg", mode], stdout=output)
 
 
 # 繪製第1張折線圖
@@ -56,6 +56,8 @@ def main():
     for output_file in output_files.values():
         with open(output_file, 'w') as f:
             f.write("k,time\n")  # CSV header
+
+    # 迭代 k 值從 11 到 25，並計算對應的 n = 2^k
     
         print(f"Running for n = 2^20")
         
