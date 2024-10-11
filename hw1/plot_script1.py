@@ -7,7 +7,7 @@ from sklearn.linear_model  import LinearRegression
 import numpy as np
 
 # 執行 C++ 程式並生成 CSV
-def run_cpp_program(executable_path, n_value, output_file, mode='first', timeout=3600):  #抓1hr
+def run_cpp_program(executable_path, n_value, output_file, mode='first', timeout=7200):  #抓2hr
     try:
         with open(output_file, 'a') as output:  # 'a' 是追加模式
             subprocess.run([executable_path, str(n_value), mode], stdout=output, timeout=timeout)
@@ -122,7 +122,7 @@ def main():
                 continue  # 繼續處理下一個資料結構
             
             # 執行程式並檢查是否成功
-            success = run_cpp_program(executable, n_value, output_files[name], timeout=3600)
+            success = run_cpp_program(executable, n_value, output_files[name], timeout=7200)
             
             # 若超過時間限制，則記錄需要預測的點並標記為跳過後續
             if not success:
