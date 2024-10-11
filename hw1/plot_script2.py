@@ -7,7 +7,7 @@ from sklearn.linear_model  import LinearRegression
 import numpy as np
 
 # 執行 C++ 程式並生成 CSV
-def run_cpp_program(executable_path, n_value, output_file, mode='second', timeout=60):  #抓1hr
+def run_cpp_program(executable_path, n_value, output_file, mode='second', timeout=3600):  #抓1hr
     try:
         with open(output_file, 'a') as output:  # 'a' 是追加模式
             subprocess.run([executable_path, str(n_value), mode], stdout=output, timeout=timeout)
