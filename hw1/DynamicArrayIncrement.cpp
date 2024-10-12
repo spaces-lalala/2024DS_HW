@@ -129,6 +129,7 @@ int main(int argc, char* argv[]) {
                 auto end_3 = high_resolution_clock::now();
                 duration<double> duration_3 = end_3 - start_3;
                 totalDuration_3[count3] += duration_3.count();
+                count3++;
             }
             else{
                 int value = rand() % 10000; // 隨機數字 0-9999
