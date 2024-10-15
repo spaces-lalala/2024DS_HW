@@ -1,6 +1,5 @@
 #此版本為撇除DynamicArray++，為了讓折線圖比較好分辨時間
 
-
 import os
 import subprocess
 import pandas as pd

@@ -6,20 +6,22 @@ import math
 import numpy as np
 
 # 執行 C++ 程式並生成 CSV
-def run_cpp_program(executable_path, output_file, mode='third'):
+def run_cpp_program(executable_path, n_value, output_file, mode="third"):
     with open(output_file, 'a') as output:  # 'a' 是追加模式
-        subprocess.run([executable_path, str(1), mode], stdout=output) #此處的1沒有用途
+        subprocess.run([executable_path, str(n_value), mode], stdout=output)
 
 
 # 繪製第1張折線圖
 def plot_third_graph(filenames, labels, output_image):
     plt.figure(figsize=(10, 6))
-    
+
     for filename, label in zip(filenames, labels):
         # 讀取 CSV 資料
         data = pd.read_csv(filename)
 
-        plt.plot(data['k'], data['time'], label=label, marker='o')
+       
+        # 繪製每條線，使用不同的樣式、標記符號和逐漸增加的線條寬度
+        plt.plot(data['k'], data['time'], label=label, marker= "o")
 
     # 設置圖表的標籤和標題
     plt.xlabel("k (Each representing the addition of 2^13 elements)")
@@ -56,12 +58,13 @@ def main():
     for output_file in output_files.values():
         with open(output_file, 'w') as f:
             f.write("k,time\n")  # CSV header
-    
-        print(f"Running for n = 2^20")
+
+    n_value = int(math.pow(2, 20))
+    print(f"Running for n = 2^20")
         
-        # 執行所有 C++ 程式並生成資料
-        for name, executable in cpp_programs.items():            
-            run_cpp_program(executable, output_files[name])
+    # 執行所有 C++ 程式並生成資料
+    for name, executable in cpp_programs.items():            
+        run_cpp_program(executable,n_value, output_files[name])
                  
 
     # 定義 CSV 檔案和對應標籤

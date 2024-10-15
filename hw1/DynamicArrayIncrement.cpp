@@ -92,24 +92,21 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
-    int n;
-
+    int n = stoi(argv[1]); // 讀取輸入的 n 值
     string mode = argv[2]; // 讀取輸入的 mode
-
-    if (mode == "third") n = int(pow(2,20));
-    
-    else n = stoi(argv[1]); // 讀取輸入的 n 
 
     const int block_size = int(pow(2,13));
     
 
-    const int numExperiments = 3; // 設定重複次數
+    const int numExperiments = 10; // 設定重複次數
     double totalDuration_1 = 0; // 記錄總時間
     double totalDuration_2 = 0; // 記錄總時間
     double totalDuration_3[150]; // 記錄總時間
+    double avgDuration_3[150]; // mode == "third"
 
     for (int i = 0; i < 150; i++){
         totalDuration_3[i] = 0;
+        avgDuration_3[i] = 0;
     }
 
     for (int experiment = 0; experiment < numExperiments; experiment++) {
@@ -121,17 +118,21 @@ int main(int argc, char* argv[]) {
         auto start_1 = high_resolution_clock::now();
 
         // 新增 n 筆隨機資料
-        for (int i = 0; i < n; i++) {
-            if ((i+1)%block_size == 0){
+        if (mode == "third"){
+            for (int i = 0; i < n; i++) {
                 auto start_3 = high_resolution_clock::now();
                 int value = rand() % 10000; // 隨機數字 0-9999
                 dynamicArray.add(value);
                 auto end_3 = high_resolution_clock::now();
                 duration<double> duration_3 = end_3 - start_3;
-                totalDuration_3[count3] += duration_3.count();
-                count3++;
+                if ((i+1)%block_size == 0){  //mode = "third"
+                    totalDuration_3[count3] += duration_3.count();
+                    count3++;
+                }
             }
-            else{
+        }
+        else{
+            for (int i = 0; i < n; i++) {
                 int value = rand() % 10000; // 隨機數字 0-9999
                 dynamicArray.add(value);
             }
@@ -145,7 +146,7 @@ int main(int argc, char* argv[]) {
         //mode == "second" 
         auto Start_2 = high_resolution_clock::now();
         // int totalSum_2 = dynamicArray.sum();
-        int total = dynamicArray.sum();
+        dynamicArray.sum_void();
         auto End_2 = high_resolution_clock::now();
         duration<double> sumDuration_2 = End_2 - Start_2;
         totalDuration_2 += sumDuration_2.count();
@@ -153,17 +154,17 @@ int main(int argc, char* argv[]) {
     // 輸出結果
     double avgDuration_1 = totalDuration_1 / numExperiments;
     double avgDuration_2 = totalDuration_2 / numExperiments; // mode == "second"
-    double avgDuration_3[150]; // mode == "third"
 
-    for (int i = 0; i < 128; i++){
-        avgDuration_3[i] = totalDuration_3[i] / numExperiments;
+    if (mode == "third"){
+        for (int i = 0; i < n/block_size; i++){
+            avgDuration_3[i] = totalDuration_3[i] / numExperiments;
+        }
     }
-
 
     if(mode == "first" || mode == "first_2" )     cout << n << "," << avgDuration_1 / 1e6 << endl; // 輸出資料數量和所需時間（秒） 
     else if(mode == "second" || mode == "second_2" ) cout << n << "," << avgDuration_2 / 1e6 << endl; // 輸出資料數量和所需時間（秒）
     else if(mode == "third") {
-        for (int i = 0; i < 128; i++){
+        for (int i = 0; i < n/block_size; i++){
             cout << i+1 << "," << avgDuration_3[i] / 1e6 << endl; // 輸出資料數量和所需時間（秒）
         }
     }
