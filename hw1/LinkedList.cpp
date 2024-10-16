@@ -97,7 +97,6 @@ int main(int argc, char* argv[]) {
 
 
     const int block_size = int(pow(2,13));
-    
 
     const int numExperiments = 10; // 設定重複次數
     double totalDuration_1 = 0; // 記錄總時間

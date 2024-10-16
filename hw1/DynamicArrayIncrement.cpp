@@ -96,7 +96,6 @@ int main(int argc, char* argv[]) {
     string mode = argv[2]; // 讀取輸入的 mode
 
     const int block_size = int(pow(2,13));
-    
 
     const int numExperiments = 10; // 設定重複次數
     double totalDuration_1 = 0; // 記錄總時間
@@ -112,7 +111,6 @@ int main(int argc, char* argv[]) {
     for (int experiment = 0; experiment < numExperiments; experiment++) {
         DynamicArrayIncrement dynamicArray;
         int count3 = 0;
-
 
         // 開始計時
         auto start_1 = high_resolution_clock::now();

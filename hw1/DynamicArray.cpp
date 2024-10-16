@@ -98,7 +98,6 @@ int main(int argc, char* argv[]) {
     string mode = argv[2]; // 讀取輸入的 mode
 
     const int block_size = int(pow(2,13));
-    
 
     const int numExperiments = 10; // 設定重複次數
     double totalDuration_1 = 0; // 記錄總時間
@@ -172,8 +171,6 @@ int main(int argc, char* argv[]) {
             cout << i+1 << "," << avgDuration_3[i] / 1e6 << endl; // 輸出資料數量和所需時間（秒）
         }
     }
-
-
 
     return 0;
 }
