@@ -1,8 +1,8 @@
 #include <iostream>
 #include <vector>
-#include <chrono> // For timing
-#include <cstdlib> // For random numbers
-#include <cmath>   // For pow()
+#include <chrono>
+#include <cstdlib>
+#include <cmath>
 
 using namespace std;
 using namespace std::chrono;
@@ -47,6 +47,24 @@ public:
         size++;
     }
 
+    // 計算陣列內所有元素的總和
+    int sum() const {
+        long long int total = 0;
+        for (size_t i = 0; i < size; i++) {
+            total += arr[i];
+        }
+        return total;
+    }
+
+    //用來計算時間怕超出Int範圍
+    void sum_void() const {
+        int total = 0;
+        for (size_t i = 0; i < size; i++) {
+            total = arr[i];
+        }
+        return ;
+    }
+
     // 取得元素數量
     size_t getSize() const {
         return size;
@@ -70,38 +88,89 @@ public:
 
 // 主程式
 int main(int argc, char* argv[]) {
-    if (argc != 2) {
-        cerr << "Usage: " << argv[0] << " <n>\n";
+
+    if (argc < 3) {
+        cerr << "Usage: " << argv[0] << " <n> <mode>\n";
         return 1;
     }
 
     int n = stoi(argv[1]); // 讀取輸入的 n 值
+    string mode = argv[2]; // 讀取輸入的 mode
+
+    const int block_size = int(pow(2,13));
 
     const int numExperiments = 10; // 設定重複次數
-    double totalDuration = 0; // 記錄總時間
+    double totalDuration_1 = 0; // 記錄總時間
+    double totalDuration_2 = 0; // 記錄總時間
+    double totalDuration_3[150]; // 記錄總時間
+    double avgDuration_3[150]; // mode == "third"
+
+    for (int i = 0; i < 150; i++){
+        totalDuration_3[i] = 0;
+        avgDuration_3[i] = 0;
+    }
 
     for (int experiment = 0; experiment < numExperiments; experiment++) {
         DynamicArray dynamicArray;
+        int count3 = 0;
 
         // 開始計時
-        auto start = high_resolution_clock::now();
+        auto start_1 = high_resolution_clock::now();
 
         // 新增 n 筆隨機資料
-        for (int i = 0; i < n; i++) {
-            int value = rand() % 10000; // 隨機數字 0-9999
-            dynamicArray.add(value);
+        if (mode == "third"){
+            for (int i = 0; i < n; i++) {
+                auto start_3 = high_resolution_clock::now();
+                int value = rand() % 10000; // 隨機數字 0-9999
+                dynamicArray.add(value);
+                auto end_3 = high_resolution_clock::now();
+                duration<double> duration_3 = end_3 - start_3;
+                if ((i+1)%block_size == 0){  //mode = "third"
+                    totalDuration_3[count3] += duration_3.count();
+                    count3++;
+                }
+            }
+        }
+        else{
+            for (int i = 0; i < n; i++) {
+                int value = rand() % 10000; // 隨機數字 0-9999
+                dynamicArray.add(value);
+            }
         }
 
         // 結束計時
-        auto end = high_resolution_clock::now();
-        duration<double> duration = end - start;
-        totalDuration += duration.count();
+        auto end_1 = high_resolution_clock::now();
+        duration<double> duration_1 = end_1 - start_1;
+        totalDuration_1 += duration_1.count();
+
+        //mode == "second" 
+        auto Start_2 = high_resolution_clock::now();
+        // int totalSum_2 = dynamicArray.sum();
+        dynamicArray.sum_void();
+        auto End_2 = high_resolution_clock::now();
+        duration<double> sumDuration_2 = End_2 - Start_2;
+        totalDuration_2 += sumDuration_2.count();
     }
 
-    // 計算平均時間
-    double avgDuration = totalDuration / numExperiments;
-    cout << n << "," << avgDuration / 1e6 << endl; // 輸出資料數量和所需時間（秒） 
 
+    // 計算平均時間
+    double avgDuration_1 = totalDuration_1 / numExperiments; // mode == "first"
+    double avgDuration_2 = totalDuration_2 / numExperiments; // mode == "second"
+
+    if(mode == "third") {
+        for (int i = 0; i < n/block_size; i++){
+            avgDuration_3[i] = totalDuration_3[i] / numExperiments;
+        }
+    }
+
+    if(mode == "first" || mode == "first_2" )  cout << n << "," << avgDuration_1 / 1e6 << endl; // 輸出資料數量和所需時間（秒） 
+
+    else if(mode == "second" || mode == "second_2" ) cout << n << "," << avgDuration_2 / 1e6 << endl; // 輸出資料數量和所需時間（秒）
+    else if(mode == "third") {
+        for (int i = 0; i < n/block_size; i++){
+            cout << i+1 << "," << avgDuration_3[i] / 1e6 << endl; // 輸出資料數量和所需時間（秒）
+        }
+    }
 
     return 0;
 }

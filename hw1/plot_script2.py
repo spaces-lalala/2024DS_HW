@@ -7,7 +7,7 @@ from sklearn.linear_model  import LinearRegression
 import numpy as np
 
 # 執行 C++ 程式並生成 CSV
-def run_cpp_program(executable_path, n_value, output_file, mode='first', timeout=7200):  #抓2hr
+def run_cpp_program(executable_path, n_value, output_file, mode='second', timeout=3600):  #抓1hr
     try:
         with open(output_file, 'a') as output:  # 'a' 是追加模式
             subprocess.run([executable_path, str(n_value), mode], stdout=output, timeout=timeout)
@@ -17,7 +17,7 @@ def run_cpp_program(executable_path, n_value, output_file, mode='first', timeout
         return False
 
 # 繪製第1張折線圖
-def plot_first_graph(filenames, labels, output_image, missing_points):
+def plot_second_graph(filenames, labels, output_image, missing_points):
     plt.figure(figsize=(10, 6))
     
     for filename, label in zip(filenames, labels):
@@ -34,8 +34,8 @@ def plot_first_graph(filenames, labels, output_image, missing_points):
 
     # 設置圖表的標籤和標題
     plt.xlabel("Number of Elements (n)")
-    plt.ylabel("Time to Add Elements (seconds)")
-    plt.title("Time to Add n Elements plot")
+    plt.ylabel("Time to Visit & Sum Elements (seconds)")
+    plt.title("Time to Visit & Sum n Elements plot")
 
 
     # 將 X 軸標籤設置為等距的 2^k 標籤
@@ -49,7 +49,6 @@ def plot_first_graph(filenames, labels, output_image, missing_points):
     plt.tight_layout()
     plt.savefig(output_image)
     plt.show()
-
 
 # 使用線性回歸來填補缺失的資料點
 def predict_missing_points(csv_file):
@@ -80,16 +79,11 @@ def main():
     }
     
     output_files = {
-        "dynamic_array": "output_1_DA.csv",
-        "dynamic_array_increment": "output_1_DA++.csv",
-        "linked_list": "output_1_LL.csv",
-        "linked_list_sorted": "output_1_LL++.csv"
+        "dynamic_array": "output_2_DA.csv",
+        "dynamic_array_increment": "output_2_DA++.csv",
+        "linked_list": "output_2_LL.csv",
+        "linked_list_sorted": "output_2_LL++.csv"
     }
-
-    # 初始化 CSV 檔案
-    for output_file in output_files.values():
-        with open(output_file, 'w') as f:
-            f.write("n,time\n")  # CSV header
 
     # 紀錄哪些資料點超時並需要預測
     missing_points = {
@@ -107,6 +101,10 @@ def main():
         "linked_list_sorted": False
     }
 
+    # 初始化 CSV 檔案
+    for output_file in output_files.values():
+        with open(output_file, 'w') as f:
+            f.write("n,time\n")  # CSV header
 
     # 迭代 k 值從 11 到 25，並計算對應的 n = 2^k
     for k in range(11, 26):
@@ -122,7 +120,7 @@ def main():
                 continue  # 繼續處理下一個資料結構
             
             # 執行程式並檢查是否成功
-            success = run_cpp_program(executable, n_value, output_files[name], timeout=7200)
+            success = run_cpp_program(executable, n_value, output_files[name], timeout=60)
             
             # 若超過時間限制，則記錄需要預測的點並標記為跳過後續
             if not success:
@@ -144,19 +142,19 @@ def main():
                 # 保存預測資料點
                 missing_points[name]["predicted_time"].append(predicted_time)
         else:
-            missing_points[name] = {"n": [], "predicted_time": []}            
+            missing_points[name] = {"n": [], "predicted_time": []}    
 
     # 定義 CSV 檔案和對應標籤
     filenames = [
-        "output_1_DA.csv",
-        "output_1_DA++.csv",
-        "output_1_LL.csv",
-        "output_1_LL++.csv"
+        "output_2_DA.csv",
+        "output_2_DA++.csv",
+        "output_2_LL.csv",
+        "output_2_LL++.csv"
     ]
     labels = ["Dynamic Array", "Dynamic Array++", "Linked List", "Linked List++"]
 
     # 繪製折線圖
-    plot_first_graph(filenames, labels, "graph1_time_to_add.png", missing_points)
+    plot_second_graph(filenames, labels, "graph2_time_to_sum.png", missing_points)
 
 if __name__ == "__main__":
     main()
