@@ -7,7 +7,7 @@ from sklearn.linear_model import LinearRegression
 import numpy as np
  
 # 執行 C++ 排序程式並生成 CSV
-def run_cpp_program(executable_path, n_value, mode, k_value, output_file, timeout=6000):
+def run_cpp_program(executable_path, n_value, mode, k_value, output_file, timeout=3000):
     try:
         with open(output_file, 'a') as output:
             subprocess.run([executable_path, str(n_value), mode, str(k_value)], stdout=output, timeout=timeout)
@@ -41,7 +41,7 @@ def plot_graph(filenames, labels, output_image, missing_points):
     # 設置圖表的標籤和標題
     plt.xlabel("Array size (n)")
     plt.ylabel("Time to sort (seconds)")
-    plt.title("圖1")
+    plt.title("Graph1")
 
     # 設定 X 軸標籤
     sizes = data['size'].values
@@ -84,10 +84,10 @@ def main():
     }
 
     output_files = {
-        "insertion_sort": "output_insertion_sort",
-        "merge_sort": "output_merge_sort",
-        "quick_hoare": "output_quick_hoare",
-        "counting_sort": "output_counting_sort"
+        "insertion_sort": "output_1_insertion_sort",
+        "merge_sort": "output_1_merge_sort",
+        "quick_hoare": "output_1_quick_hoare",
+        "counting_sort": "output_1_counting_sort"
     }
 
     # 紀錄哪些資料點超時並需要預測
@@ -112,22 +112,30 @@ def main():
             f.write("size,time\n")
     
     # 生成不同大小的數組並執行排序
-    for k in range(11, 31):  # 可調整範圍
-        size = 2 ** k
+    for n in range(10, 31):  # 可調整範圍
+        size = pow(2,n)
         print(f"Running tests for array size = {size}")
         
-        for name, executable in cpp_programs.items():
-            # 如果該資料結構已被標記為跳過，則跳過後續執行
-            if skipped_structures[name]:
+        if n < 26:
+            for name, executable in cpp_programs.items():
+                # 如果該資料結構已被標記為跳過，則跳過後續執行
+                if skipped_structures[name]:
+                    print(f"Skipping {name} for size {size}")
+                    missing_points[name]["size"].append(size)
+                    continue
+
+                success = run_cpp_program(executable, size, "first", 0, output_files[name], timeout=3000)
+                if not success:
+                    print(f"Skipping remaining points for {name} after size {size}")
+                    missing_points[name]["size"].append(size)
+                    skipped_structures[name] = True  # 標記此資料結構為跳過
+        else:
+            for name, executable in cpp_programs.items():
+                # 如果該資料結構已被標記為跳過，則跳過後續執行
                 print(f"Skipping {name} for size {size}")
                 missing_points[name]["size"].append(size)
                 continue
 
-            success = run_cpp_program(executable, size, "first", 0, output_files[name], timeout=6000)
-            if not success:
-                print(f"Skipping remaining points for {name} after size {size}")
-                missing_points[name]["size"].append(size)
-                skipped_structures[name] = True  # 標記此資料結構為跳過
 
     # 預測缺失資料點並將預測值加入 CSV
     for name, output_file in output_files.items():
@@ -140,7 +148,7 @@ def main():
                 missing_points[name]["predicted_time"].append(predicted_time)
 
     # 繪製圖表
-    plot_graph(list(output_files.values()), list(cpp_programs.keys()), "sorting_comparison.png", missing_points)
+    plot_graph(list(output_files.values()), list(cpp_programs.keys()), "grapg_1.png", missing_points)
 
 if __name__ == "__main__":
     main()
