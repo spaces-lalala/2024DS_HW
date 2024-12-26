@@ -112,7 +112,7 @@ int main(int argc, char *argv[]) {
     int n = pow(2, 20);
     int k_value = stoi(argv[1]); // k值
 
-    const int numExperiments = 1; // 設定重複次數
+    const int numExperiments = 10; // 設定重複次數
     double totalDuration = 0;     // 記錄總時間
     double totalheight = 0;
 

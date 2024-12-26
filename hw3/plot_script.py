@@ -53,7 +53,7 @@ def main():
             f.write("k,value,height\n")
 
     # 測試 k 值範圍
-    k_values = [2 ** i for i in range(1,2)]
+    k_values = [2 ** i for i in range(0,21)]
 
     # 執行程式並收集資料
     for k in k_values:
